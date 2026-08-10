@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+a{
+    color: rgb(32, 32, 32);
+    text-decoration: none;
+}
+a:hover{
+    color: rgb(0, 143, 136);
+    text-decoration: underline;
+}
+
 textarea{
     resize: none;
     height: 1.5em;
@@ -16,3 +25,40 @@ button{
     vertical-align: top;
     height: 1.5em;
 }
+
+
+
+.cartao_repo{
+    font-size: 80%;
+
+    margin: 2em;
+    margin-left: 0.1em;
+    padding: 0.2em;
+    border-radius: 0.2em;
+    width: 48em;
+    background-color: rgb(207, 207, 207);
+}
+
+
+.titulo_repo{
+    display: flex;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+}
+
+.titulo_repo > *:first-child{
+   margin-right: auto;
+}
+
+
+.info_repo{
+    padding: 0.2em;
+    margin: 0.2em;
+    border-radius: 0.2em;
+    background-color: rgb(182, 182, 182);
+}
+
+.desc_repo{
+    min-height: 1em;
+}
+

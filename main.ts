@@ -1,5 +1,6 @@
 import { chave_github } from "./src/config.js";
 import type { Repo } from "./structs.js";
+import { create_cartao_repo_string } from "./structs.js";
 
 const btn_buscar: HTMLButtonElement | null = document.getElementById("btn_buscar") as HTMLButtonElement;
 const btn_pag_prev: HTMLButtonElement | null = document.getElementById("btn_pag_prev") as HTMLButtonElement;
@@ -14,6 +15,8 @@ btn_buscar?.addEventListener("click", async () => {
     if (input_busca == null) return;
     if (input_busca.value== "") return;
     btn_buscar.disabled = true;
+
+    current_page = 1;
 
     ult_busca = input_busca.value;
     await buscar_mostrar_repos(ult_busca);
@@ -34,7 +37,6 @@ btn_prox_pag?.addEventListener("click", async () => {
 var page_size: number = 10;
 var current_page: number = 1;
 var max_repos_to_load: number = 0;
-
 
 function update_btn_paginas(){
     if (btn_prox_pag == null) return;
@@ -72,7 +74,6 @@ async function buscar_mostrar_repos(busca: string){
         append_repo(rep);
     });
 }
-
 async function load_repos(busca: string){
     const query = `?per_page=${page_size}&page=${current_page}&q=` + encodeURIComponent(busca);
     const url: string = `https://api.github.com/search/repositories${query}`;
@@ -93,6 +94,7 @@ async function load_repos(busca: string){
         var nr: Repo = {
             nome: rep["name"] as string,
             link: rep["html_url"] as string,
+            descricao: rep["description"] as string,
             criacao: new Date(rep["created_at"] as string),
 
             forks: rep["forks_count"] as number,
@@ -116,10 +118,9 @@ async function load_repos(busca: string){
 function append_repo(repo: Repo){
     if (div_repos == null) return;
     
-    var elemento: HTMLParagraphElement = document.createElement("p");
-    elemento.textContent = `${repo.nome} -> ${repo.link}`; 
+    var repo_card_string = create_cartao_repo_string(repo);
 
-    div_repos.append(elemento);
+    div_repos.insertAdjacentHTML("beforeend", repo_card_string);
 }
 function limpar_area_repos(){
     if (div_repos == null) return;
@@ -142,6 +143,6 @@ async function get(url: string): Promise<any>{
     }
 
     var jaison: Promise<any> = res.json();
-    // console.log(jaison);
+    console.log(jaison);
     return await jaison;
 }
