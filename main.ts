@@ -9,7 +9,7 @@ bpr?.addEventListener("click", async () => {
     
     var nome_usuario: string = input_nome.value;
     
-    console.log(await get_repo_count(nome_usuario));
+    console.log(await get_repos(nome_usuario));
 });
 
 async function get(url: string): Promise<any>{
@@ -28,11 +28,10 @@ async function get(url: string): Promise<any>{
     return await res.json();
 }
 
-async function get_repo_count(nome: string) {
-    const url: string = `https://api.github.com/users/${nome}`;
-    const key: string = "public_repos";
+async function get_repos(nome: string): Promise<Response> {
+    const query = `?per_page=${20}&page=${1}&q=` + encodeURIComponent(`${nome} in:name`);
+    const url: string = `https://api.github.com/search/repositories${query}`;
 
-    var qtd_projetos: number = (await get(url))[key];
-
-    return qtd_projetos;
+    var repositorios: Response = (await get(url)).items;    
+    return repositorios;
 }
