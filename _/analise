@@ -12,7 +12,6 @@ obs:
 MVP:
     inserir palavra de busca
     mostrar no minimo nome e link de acesso dos repositoriso
-    ser implementado com TypeScript
 
 OPICIONAIS:
     Opções de filtragem (data, qtd commits)
