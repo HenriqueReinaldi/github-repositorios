@@ -1,0 +1,28 @@
+ideia:
+    permitir que o usuario insira qualquer string
+    procurar na api do github por repositorios com string (fuzzy)
+        -> mostrar ao usuário os repositorios, e link
+
+
+obs:
+    estética livre
+    https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api
+
+
+MVP:
+    inserir palavra de busca
+    mostrar no minimo nome e link de acesso dos repositoriso
+    ser implementado com TypeScript
+
+OPICIONAIS:
+    Opções de filtragem (data, qtd commits)
+    Opções de ordenação (nome, data, qtd commits..)
+    Manter uma lista de favoritos
+    Permitir que o usuário marque um repositório como visualizado
+
+
+
+
+For example, if you wanted to search for all repositories owned by defunkt that contained the word GitHub and Octocat in the README file, you would use the following query with the search repositories endpoint:
+
+GitHub Octocat in:readme user:defunkt
