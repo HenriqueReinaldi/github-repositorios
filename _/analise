@@ -25,3 +25,15 @@ OPICIONAIS:
 For example, if you wanted to search for all repositories owned by defunkt that contained the word GitHub and Octocat in the README file, you would use the following query with the search repositories endpoint:
 
 GitHub Octocat in:readme user:defunkt
+
+
+UTIL:
+    html_url
+    created_at
+    forks_count / forks
+    stargazers_count
+    watchers
+    language
+    languages_url
+
+    owner -> obj dono <Record<string, unknown>
