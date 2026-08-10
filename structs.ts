@@ -12,4 +12,6 @@ export type Repo = {
     all_languages: string; //languages_url
 
     owner: Record<string, unknown>; //owner
+
+    visto: boolean;
 }

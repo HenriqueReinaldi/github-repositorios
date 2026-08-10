@@ -1,0 +1,18 @@
+* {
+    font-family: 'Consolas', system-ui, monospace;
+    font-size: 120%;
+    box-sizing: border-box;
+}
+
+textarea{
+    resize: none;
+    height: 1.5em;
+    width: 50em;
+    overflow: hidden;
+}
+
+button{
+    display: inline-block;
+    vertical-align: top;
+    height: 1.5em;
+}
