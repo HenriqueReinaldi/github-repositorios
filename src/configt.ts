@@ -1,0 +1,1 @@
+export const chave_github: string = "chave";
