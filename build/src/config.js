@@ -1,0 +1,2 @@
+export const chave_github = "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";
+//# sourceMappingURL=config.js.map
