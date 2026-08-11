@@ -10,8 +10,8 @@ obs:
 
 
 MVP:
-    inserir palavra de busca
-    mostrar no minimo nome e link de acesso dos repositoriso
+    ok  inserir palavra de busca 
+    ok  mostrar no minimo nome e link de acesso dos repositoriso
 
 OPICIONAIS:
     Opções de filtragem (data, qtd commits)
@@ -44,3 +44,24 @@ Fluxo de uso:
     |    ├── 5 -> Filtrar repositórios ?
     |    ├── 6 -> Ordenar repositórios ?
     └────┘
+
+
+
+
+        <div class="cartao_repo">
+            <div class="titulo_repo">
+                <a href="${repo.link}">[${repo.nome}] ↗</a>
+                <div>[${repo.forks}f]</div>
+                <div>[${repo.stars}*]</div>
+                <div style="color:#000000">[${repo.language}]</div>
+            </div>
+
+            <div class="info_repo">
+                <div class="desc_repo">${repo.descricao}<br><br>est: ${repo.criacao.toDateString()} <br> por: ${repo.owner.login as string}</div>
+            </div>
+
+            <div class="footer_repo">
+                <button>favorito</button>
+                <button>visto</button>
+            </div>
+        </div>

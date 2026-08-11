@@ -15,6 +15,7 @@ export type Repo = {
     owner: Record<string, unknown>; //owner
 
     visto: boolean;
+    favorito: boolean;
 }
 
 export const cores_github: Record<string, string> = {
@@ -65,6 +66,10 @@ export function create_cartao_repo_string(repo: Repo): string{
             </div>
             <div class="info_repo">
                 <div class="desc_repo">${repo.descricao}<br><br>est: ${repo.criacao.toDateString()} <br> por: ${repo.owner.login as string}</div>
+            </div>
+            <div class="footer_repo">
+                <button>favorito</button>
+                <button>visto</button>
             </div>
         </div>
     `
