@@ -146,6 +146,7 @@ async function load_repos(busca: string){
 
 
 function append_repo(repo: Repo){
+    if (repo == undefined || repo == null) return;
     if (div_repos == null) return;
     
     var repo_card_string = create_cartao_repo_string(repo);
