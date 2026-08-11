@@ -121,7 +121,9 @@ async function fetch_novos_repos(busca: string){
             owner: rep["owner"] as Record<string, unknown>,
 
             visto: false,
-            favorito: false
+            favorito: false,
+
+            index: cached_repos.length
         }
         cached_repos.push(nr);
     });
@@ -149,6 +151,23 @@ function append_repo(repo: Repo){
     var repo_card_string = create_cartao_repo_string(repo);
 
     div_repos.insertAdjacentHTML("beforeend", repo_card_string);
+
+    const favbtn: HTMLButtonElement = document.getElementById(`f${repo.index}`) as HTMLButtonElement;
+    const fdsbtn: HTMLButtonElement = document.getElementById(`v${repo.index}`) as HTMLButtonElement;
+
+    favbtn.addEventListener("click", () => {
+        if(cached_repos[repo.index] == undefined) return;
+        cached_repos[repo.index]!.favorito = !cached_repos[repo.index]?.favorito;
+        //q nem c#
+
+        mostrar_repos();
+    });
+    fdsbtn.addEventListener("click", () => {
+        if(cached_repos[repo.index] == undefined) return;
+        cached_repos[repo.index]!.visto = !cached_repos[repo.index]?.visto;
+
+        mostrar_repos();
+    });
 }
 function limpar_area_repos(){
     if (div_repos == null) return;
