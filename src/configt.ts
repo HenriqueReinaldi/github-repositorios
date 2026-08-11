@@ -1,1 +1,1 @@
-export const chave_github: string = "chave";
+export const chave_github: string = "";
