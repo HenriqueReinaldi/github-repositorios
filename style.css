@@ -46,6 +46,10 @@ button{
     align-items: center;
 }
 
+/* .footer_repo{
+
+} */
+
 .titulo_repo > *:first-child{
    margin-right: auto;
 }
