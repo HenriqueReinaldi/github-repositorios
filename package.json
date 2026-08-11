@@ -1,0 +1,14 @@
+{
+  "name": "github-repositorios",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --outDir build",
+    "start": "npx serve .",
+    "this": "npm run build && npm run start"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0",
+    "typescript": "^5.0.0"
+  }
+}
