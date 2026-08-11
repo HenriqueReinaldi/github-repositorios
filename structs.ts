@@ -55,6 +55,8 @@ export const cores_github: Record<string, string> = {
 };
 
 export function create_cartao_repo_string(repo: Repo): string{
+    if (repo == undefined || repo == null) return "";
+
     if (repo.language == null) repo.language = "";
     if (repo.descricao == null) repo.descricao = "";
     
