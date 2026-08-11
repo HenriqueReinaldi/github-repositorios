@@ -16,7 +16,7 @@ btn_buscar?.addEventListener("click", async () => {
     if (input_busca.value== "") return;
     btn_buscar.disabled = true;
 
-    current_page = 1;
+    reset_busca();
 
     ult_busca = input_busca.value;
     await buscar_mostrar_repos(ult_busca);
@@ -25,19 +25,25 @@ btn_buscar?.addEventListener("click", async () => {
     btn_buscar.disabled = false;
 });
 btn_pag_prev.addEventListener("click", async () => {
-    prev_pag();
+    await prev_pag();
     update_btn_paginas();
 });
 btn_prox_pag?.addEventListener("click", async () => {
-    prox_pag();
+    await prox_pag();
     update_btn_paginas();
 });
 
 
 var page_size: number = 10;
 var current_page: number = 1;
+var max_visited_page: number = 1;
 var max_repos_to_load: number = 0;
 
+function reset_busca(){
+    current_page = 1;
+    max_visited_page = 1;
+    cached_repos.length = 0;
+}
 function update_btn_paginas(){
     if (btn_prox_pag == null) return;
     if (btn_pag_prev == null) return;
@@ -48,33 +54,44 @@ function update_btn_paginas(){
     if (current_page < Math.trunc((max_repos_to_load+page_size) / page_size)) btn_prox_pag.disabled = false;
     if (current_page > 1) btn_pag_prev.disabled = false;
 }
-function prox_pag(){
+async function prox_pag(){
+    if (btn_prox_pag == null) return;
+    btn_prox_pag.disabled = true;
+
     if (current_page < Math.trunc((max_repos_to_load+page_size) / page_size)) {
         current_page++;
-        buscar_mostrar_repos(ult_busca);
+        await buscar_mostrar_repos(ult_busca);
     }
+    btn_prox_pag.disabled = false;
 }
-function prev_pag(){
+async function prev_pag(){
+    if (btn_pag_prev == null) return;
+    btn_pag_prev.disabled = true;
+
     if (current_page > 1) {
         current_page--;
-        buscar_mostrar_repos(ult_busca);
+        await buscar_mostrar_repos(ult_busca);
     }
+    btn_pag_prev.disabled = false;
 }
 
-
+var cached_repos: Array<Repo> = new Array<Repo>;
 var loaded_repos: Array<Repo> = new Array<Repo>;
 
-async function buscar_mostrar_repos(busca: string){
-    await load_repos(`${busca} in:name`);
-    
-    if (max_repos_to_load == 0) return;
-
+function mostrar_repos(){
     limpar_area_repos();
     loaded_repos.forEach(rep => {
         append_repo(rep);
     });
 }
-async function load_repos(busca: string){
+async function buscar_mostrar_repos(busca: string){
+    await load_repos(`${busca} in:name`);
+    
+    if (max_repos_to_load == 0) return;
+
+    mostrar_repos();
+}
+async function fetch_novos_repos(busca: string){
     const query = `?per_page=${page_size}&page=${current_page}&q=` + encodeURIComponent(busca);
     const url: string = `https://api.github.com/search/repositories${query}`;
 
@@ -86,10 +103,7 @@ async function load_repos(busca: string){
 
     var repos: Array<Record<string, unknown>> = res.items;    
     max_repos_to_load = res.total_count as number;
-    console.log(max_repos_to_load);
-    
 
-    loaded_repos.length = 0;
     repos.forEach(rep => {
         var nr: Repo = {
             nome: rep["name"] as string,
@@ -106,11 +120,27 @@ async function load_repos(busca: string){
 
             owner: rep["owner"] as Record<string, unknown>,
 
-            visto: false
-        }
+            visto: false,
+            favorito: false,
 
-        loaded_repos.push(nr);
+            index: cached_repos.length
+        }
+        cached_repos.push(nr);
     });
+}
+async function load_repos(busca: string){
+    if (current_page >= max_visited_page){
+        await fetch_novos_repos(busca);
+        max_visited_page++;
+    }
+
+    loaded_repos.length = 0;
+
+    var cpps: number = current_page*page_size;
+    for (var i = cpps-page_size; i < cpps; i++){
+        loaded_repos.push(cached_repos[i] as Repo); 
+    }
+    console.log(loaded_repos);
 }
 
 
@@ -121,6 +151,23 @@ function append_repo(repo: Repo){
     var repo_card_string = create_cartao_repo_string(repo);
 
     div_repos.insertAdjacentHTML("beforeend", repo_card_string);
+
+    const favbtn: HTMLButtonElement = document.getElementById(`f${repo.index}`) as HTMLButtonElement;
+    const fdsbtn: HTMLButtonElement = document.getElementById(`v${repo.index}`) as HTMLButtonElement;
+
+    favbtn.addEventListener("click", () => {
+        if(cached_repos[repo.index] == undefined) return;
+        cached_repos[repo.index]!.favorito = !cached_repos[repo.index]?.favorito;
+        //q nem c#
+
+        mostrar_repos();
+    });
+    fdsbtn.addEventListener("click", () => {
+        if(cached_repos[repo.index] == undefined) return;
+        cached_repos[repo.index]!.visto = !cached_repos[repo.index]?.visto;
+
+        mostrar_repos();
+    });
 }
 function limpar_area_repos(){
     if (div_repos == null) return;

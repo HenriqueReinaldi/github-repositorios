@@ -15,6 +15,9 @@ export type Repo = {
     owner: Record<string, unknown>; //owner
 
     visto: boolean;
+    favorito: boolean;
+
+    index: number;
 }
 
 export const cores_github: Record<string, string> = {
@@ -54,9 +57,16 @@ export const cores_github: Record<string, string> = {
 export function create_cartao_repo_string(repo: Repo): string{
     if (repo.language == null) repo.language = "";
     if (repo.descricao == null) repo.descricao = "";
+    
+    var cartao_tipo = "cartao_repo";
+    var bar_fav = "";
+    if (repo.favorito) bar_fav = '<div class="bar_fav"></div>';
+    if (repo.visto) cartao_tipo = "cartao_fds";
 
+    
     const cartao =  `
-        <div class="cartao_repo">
+        <div class="${cartao_tipo}">
+            ${bar_fav}
             <div class="titulo_repo">
                 <a href="${repo.link}">[${repo.nome}] ↗</a>
                 <div>[${repo.forks}f]</div>
@@ -66,7 +76,12 @@ export function create_cartao_repo_string(repo: Repo): string{
             <div class="info_repo">
                 <div class="desc_repo">${repo.descricao}<br><br>est: ${repo.criacao.toDateString()} <br> por: ${repo.owner.login as string}</div>
             </div>
+            <div class="footer_repo">
+                <button id="v${repo.index}">visto</button>
+                <button id="f${repo.index}">favorito</button>
+            </div>
         </div>
     `
+
     return cartao;
 }
