@@ -27,7 +27,6 @@ button{
 }
 
 
-
 .cartao_repo{
     font-size: 80%;
 
@@ -39,6 +38,22 @@ button{
     background-color: rgb(207, 207, 207);
 }
 
+.cartao_fds{
+    font-size: 80%;
+
+    margin: 2em;
+    margin-left: 0.1em;
+    padding: 0.2em;
+    border-radius: 0.2em;
+    width: 48em;
+    background-color: rgb(145, 145, 145);
+}
+
+.bar_fav{
+    background-color: rgb(247, 214, 30);
+    min-height: 1em;
+    margin: 0.2em;
+}
 
 .titulo_repo{
     display: flex;
